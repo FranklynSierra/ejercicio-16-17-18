@@ -1,25 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Route, Routes,Navigate as Redirect, } from 'react-router-dom';
 
-function App() {
+import Dashboardpage from './pages/dashboard/DashBoard';
+import { Notfoundpage } from './pages/404/NotFounPage';
+
+function AppRoutingFinal() {
+  let loggedIn = true;
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      {/* Route Switch */}
+      <Routes>
+        {/* Redirections to protect our routes */}
+        <Route exact path='/'>
+          {
+           loggedIn ? 
+           (<Redirect from='/' to='/dashboard' />)
+           :
+           (<Redirect from='/' to='/login' /> )
+          }
+        </Route>
+        {/* Login Route */}
+        <Route exact path='/login' element={<Loginpage></Loginpage>} />  
+        {/* DashBoard Route */}
+        <Route exact path='/dashboard'>
+          {
+           loggedIn ? 
+           (<Dashboardpage />)
+           :
+           (<Redirect from='/' to='/login' /> )
+          }
+        </Route>
+        <Route element={<Notfoundpage/>}/>
+      </Routes>
+    </Router>
   );
 }
 
-export default App;
+export default AppRoutingFinal;
